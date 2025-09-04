@@ -11,6 +11,8 @@ export class HomePage {
   }
 
   //Selectors
+
+  // Upper banner and text
   get greetingText(): Locator {
     return this.page.locator('p.lead');
   }
@@ -19,6 +21,7 @@ export class HomePage {
     return this.page.locator('strong.uppercase');
   }
 
+  // Upper social media icons
   get faceBookIcon(): Locator {
     return this.page.locator('a.facebook');
   }
@@ -31,10 +34,12 @@ export class HomePage {
     return this.page.locator('a.email');
   }
 
+  // Logo
   get monoxaLogo(): Locator {
     return this.page.locator('#logo');
   }
 
+  // Header navigation and links  
   get headerNavigation(): Locator {
     return this.page.locator('ul.nav').first();
   }
@@ -59,10 +64,12 @@ export class HomePage {
     return this.page.locator('a.nav-top-link[href="https://monoxatoys.com/contact/"]');
   }
 
+  //Search icon
   get searchIcon(): Locator {
     return this.page.locator('i.icon-search').first();
   }
 
+  //Greeting photo, text and button
   get greetingsPhoto(): Locator {
     return this.page.locator('div.img.has-hover.x50.y10');
   }
@@ -75,22 +82,28 @@ get greeting2(): Locator {
   return this.page.locator('h4.uppercase');
 }
 
+get greeting3(): Locator {
+  return this.page.locator('p.lead');
+}
+
 get knowMeBetterButton(): Locator {
   return this.page.locator('a.button.secondary');
 }
 
-get tutorialsBanner(): Locator {
-  return this.page.locator('a.uppercase[href="https://monoxatoys.com/product-category/tutorials/"]');
+// Banners and links
+get patternsBanner(): Locator {
+  return this.page.locator('a.uppercase[href="https://monoxatoys.com/crochet-patterns"]');
 }
 
 get dollsBanner(): Locator {
-  return this.page.locator('a.uppercase[href="https://monoxatoys.com/product-category/exclusive-dolls/"]');
+  return this.page.locator('a.uppercase[href="https://monoxatoys.com/exclusive-dolls/"]');
 }
 
 get aboutBanner(): Locator {
-  return this.page.locator('a.uppercase[href="https://monoxatoys.com/elements/pages/about"]');
+  return this.page.locator('a[href$="/elements/pages/about/"]');
 }
 
+// Best selling items.
 get bestSellingItems(): Locator {
   return this.page.locator('.row-slider .product-small.col');
 }
@@ -233,6 +246,47 @@ async upperSocialMediaIconsAreVisible(): Promise<void> {
   async searchIconIsVisible(): Promise<void> {
     await expect(this.searchIcon).toBeVisible();
   }
+
+  //Greeting photo is visible and has correct text and button
+  async greetingPhotoIsVisible(expectedText1: string, expectedText2: string, expectedText3: string, expectedButtonText: string): Promise<void> {
+    await expect(this.greetingsPhoto).toBeVisible();
+    await expect(this.greeting1).toBeVisible();
+    await expect(this.greeting1).toContainText(expectedText1);
+    await expect(this.greeting2).toBeVisible();
+    await expect(this.greeting2).toContainText(expectedText2);
+    await expect(this.greeting3).toBeVisible();
+    await expect(this.greeting3).toContainText(expectedText3);
+    await expect(this.knowMeBetterButton).toBeVisible();
+    await expect(this.knowMeBetterButton).toContainText(expectedButtonText);
+    await expect(this.knowMeBetterButton).toHaveAttribute('href', 'https://monoxatoys.com/about/');
+  }
+
+  //Banners are visible and have correct links
+  async bannersAreVisible(): Promise<void> {
+    const patternsBanner = this.patternsBanner;
+    const dollsBanner = this.dollsBanner;
+    const aboutBanner = this.aboutBanner;
+    await expect(patternsBanner).toBeVisible();
+    await expect(patternsBanner).toHaveAttribute('href', 'https://monoxatoys.com/crochet-patterns');
+    await expect(dollsBanner).toBeVisible();
+    await expect(dollsBanner).toHaveAttribute('href', 'https://monoxatoys.com/exclusive-dolls/');
+    await expect(aboutBanner).toBeVisible();
+    await expect(aboutBanner).toHaveAttribute('href', 'https://monoxatoys.com/elements/pages/about/');
+  }
+
+  //Best selling items are visible and have at least one item
+  async bestSellingItemsAreVisible(): Promise<void> {
+    const items = this.bestSellingItems;
+    const count = await items.count(); // get the number of items
+    expect(count).toBeGreaterThan(0); 
+    //Check that each item is visible
+    for (let i = 0; i < count; i++) {
+      const item = items.nth(i); // get the item at index i
+      await expect(item).toBeVisible();
+    }
+  }
+
+  
 
 
 

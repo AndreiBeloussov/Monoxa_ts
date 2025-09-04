@@ -25,10 +25,29 @@ test('Main page: header navigation is visible with correct links', async ({ page
   await homePage.headerNavigationIsVisible();
 });
 
-test.only('Main page: search icon is visible', async ({ page }) => {
+test('Main page: search icon is visible', async ({ page }) => {
   const homePage = new HomePage(page);
   await homePage.openMainPage();
   await homePage.searchIconIsVisible();
 });
+
+test('Main page: greeting photo is visible with correct text and button', async ({ page }) => {
+  const homePage = new HomePage(page);
+  await homePage.openMainPage();
+  await homePage.greetingPhotoIsVisible('Hey sweetie', 'I am so glad to see you! Come on in, take your shoes off… How do you like your coffee?', 'I’m Roxanne – Amigurumi guru from Estonia', 'Know me better');
+});
+
+test('Main page: banners are visible with correct links', async ({ page }) => {
+  const homePage = new HomePage(page);
+  await homePage.openMainPage();
+  await homePage.bannersAreVisible();
+});
+
+test.only('Main page: best selling items are visible and at least 3 items are displayed', async ({ page }) => {
+  const homePage = new HomePage(page);
+  await homePage.openMainPage();
+  await homePage.bestSellingItemsAreVisible();
+});
+
 
 
