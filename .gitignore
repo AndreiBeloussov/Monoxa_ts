@@ -1,0 +1,17 @@
+# Node modules
+node_modules/
+
+# Playwright generated stuff
+playwright-report/
+test-results/
+*.log
+
+# OS/mac-specific
+.DS_Store
+
+# TypeScript build artifacts (если есть)
+dist/
+*.tsbuildinfo
+
+# VSCode settings (если не хочешь шарить конфиг)
+.vscode/
