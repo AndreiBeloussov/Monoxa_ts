@@ -75,19 +75,27 @@ export class HomePage {
   }
 
   get greeting1(): Locator {
-  return this.page.locator('h3.alt-font');
+  return this.page.locator('h1.section-title-normal');
 }
 
 get greeting2(): Locator {
-  return this.page.locator('h4.uppercase');
+  return this.page.locator('h3.alt-font').nth(0);
 }
 
 get greeting3(): Locator {
-  return this.page.locator('p.lead');
+  return this.page.locator('h3.uppercase').nth(0);
 }
 
-get knowMeBetterButton(): Locator {
-  return this.page.locator('a.button.secondary');
+get greeting4(): Locator {
+  return this.page.locator('h3.uppercase').nth(1);
+}
+
+get greeting5(): Locator {
+  return this.page.locator('h3.alt-font').nth(1);
+}
+
+get shopStartButton(): Locator {
+  return this.page.locator('a.button.primary.is-xlarge');
 }
 
 // Banners and links
@@ -108,10 +116,12 @@ get bestSellingItems(): Locator {
   return this.page.locator('.row-slider .product-small.col');
 }
 
+//Banner with comments
 get bannerComment(): Locator {
   return this.page.locator('.testimonial-text > p');
 }
 
+// Latest products, prices and names
 get latestProducts(): Locator {
   return this.page.locator('#woocommerce_products-12 .product_list_widget > li');
 }
@@ -124,14 +134,17 @@ get productsName(): Locator {
   return this.page.locator('.product-title');
 }
 
+//Best selling produccts.
 get bestSellingProducts(): Locator {
   return this.page.locator('#woocommerce_products-11 .product_list_widget > li');
 }
 
+//Top rated products.
 get topRatedProducts(): Locator {
   return this.page.locator('#woocommerce_top_rated_products-3 .product_list_widget > li');
 }
 
+//Bottom section
 get bottomNavigation(): Locator {
   return this.page.locator('#nav_menu-5 .widget-title');
 }
@@ -248,7 +261,7 @@ async upperSocialMediaIconsAreVisible(): Promise<void> {
   }
 
   //Greeting photo is visible and has correct text and button
-  async greetingPhotoIsVisible(expectedText1: string, expectedText2: string, expectedText3: string, expectedButtonText: string): Promise<void> {
+  async greetingPhotoIsVisible(expectedText1: string, expectedText2: string, expectedText3: string, expectedText4: string, expectedText5:string, expectedButtonText: string): Promise<void> {
     await expect(this.greetingsPhoto).toBeVisible();
     await expect(this.greeting1).toBeVisible();
     await expect(this.greeting1).toContainText(expectedText1);
@@ -256,9 +269,13 @@ async upperSocialMediaIconsAreVisible(): Promise<void> {
     await expect(this.greeting2).toContainText(expectedText2);
     await expect(this.greeting3).toBeVisible();
     await expect(this.greeting3).toContainText(expectedText3);
-    await expect(this.knowMeBetterButton).toBeVisible();
-    await expect(this.knowMeBetterButton).toContainText(expectedButtonText);
-    await expect(this.knowMeBetterButton).toHaveAttribute('href', 'https://monoxatoys.com/about/');
+    await expect(this.greeting4).toBeVisible();
+    await expect(this.greeting4).toContainText(expectedText4);
+    await expect(this.greeting5).toBeVisible();
+    await expect(this.greeting5).toContainText(expectedText5);
+    await expect(this.shopStartButton).toBeVisible();
+    await expect(this.shopStartButton).toContainText(expectedButtonText);
+    await expect(this.shopStartButton).toHaveAttribute('href', 'https://monoxatoys.com/crochet-patterns');
   }
 
   //Banners are visible and have correct links
@@ -286,7 +303,52 @@ async upperSocialMediaIconsAreVisible(): Promise<void> {
     }
   }
 
+  //Banner with comments is visible and has at least one comment
+  async bannerWithCommentsIsVisible(): Promise<void> {
+    const comments = this.bannerComment;
+    const count = await comments.count(); // get the number of comments
+    expect(count).toBeGreaterThan(0);
+  }
+
+  //Latest products are visible and have prices and names
+  async latestProductsAreVisible(): Promise<void> {
+    const products = this.latestProducts;
+    const count = await products.count(); // get the number of products
+    expect(count).toBeGreaterThan(0);
+    //Check that each product has a price and a name
+    for (let i = 0; i < count; i++) {
+      const product = products.nth(i); // get the product at index i
+      await expect(product).toBeVisible();
+      const price = this.productsPrice;
+      const name = this.productsName;
+      await expect(price).toBeVisible();
+      await expect(name).toBeVisible();
+    }
+  }
+
+  // Best selling products are visible and have prices and names
+  async bestSellingProductsAreVisible(): Promise<void> {
+    const products = this.bestSellingProducts;
+    const count = await products.count(); // get the number of products
+    expect(count).toBeGreaterThan(0);
+    //Check that each product has a price and a name
+    for (let i = 0; i < count; i++) {
+      const product = products.nth(i); // get the product at index i
+      await expect(product).toBeVisible();
+      const price = this.productsPrice;
+      const name = this.productsName;
+      await expect(price).toBeVisible();
+      await expect(name).toBeVisible();
+    }
+  }
+
   
+  
+  
+
+
+
+
 
 
 
